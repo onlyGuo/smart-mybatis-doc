@@ -26,7 +26,9 @@ export default defineUserConfig({
             // 安装
             "quick/project-setup",
             // 配置
-            "quick/project-configuration"
+            "quick/project-configuration",
+            // 开发
+            "quick/project-dev",
           ],
         },
         {
@@ -38,6 +40,8 @@ export default defineUserConfig({
             "dev/entity",
             // 命名策略
             "dev/naming",
+            // 常用的增删改
+            "dev/comm-adm",
             // 查询条件构造器
             "dev/query-builder",
             // 使用DSL构建查询
