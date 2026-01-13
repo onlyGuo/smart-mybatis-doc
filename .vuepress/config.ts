@@ -44,22 +44,37 @@ export default defineUserConfig({
             "dev/comm-adm",
             // 查询条件构造器
             "dev/query-builder",
-            // 使用DSL构建查询
-            "dev/dsl-query",
-            // 非空条件查询
-            "dev/not-null-query",
             // 自定义表前缀
             "dev/table-prefix",
             // 自动同步数据库
             "dev/auto-sync-db",
+            // 使用初始化脚本
+            "dev/init-sql",
             // 主键生成策略
             "dev/primary-generator",
             // 自定义字段映射
             "dev/custom-field-mapping",
             // 对象字段存储
             "dev/json-field",
+            // 开发规范
+            "dev/guidelines",
           ],
         },
+        {
+          text: "查询指南",
+          children: [
+            // 使用DSL构建查询
+            "dev/dsl-query",
+            // 非空条件查询
+            "dev/not-null-query",
+            // 分片查询
+            "dev/query-limit",
+            // 分页查询
+            "dev/query-page",
+            // 排序
+            "dev/query-sort",
+          ]
+        }
       ],
     },
     navbar: [
@@ -70,6 +85,7 @@ export default defineUserConfig({
         children: [
           { text: "快速开始", link: "/docs/guide/quick/quick-start.html" },
           { text: "开发指南", link: "/docs/guide/dev/preface.html" },
+          { text: "查询指南", link: "/docs/guide/dev/dsl-query.html" },
         ],
       },
       { text: "博客", link: "/blogs/" },

@@ -30,3 +30,34 @@ public class StudentServiceImpl implements StudentService {
 ::: tip 注意
 注意: 当使用`ifAnd`或`ifOr`来添加条件时, 如果传入的值为`null`或空字符串, 该条件将不会被添加到查询中. 如果您需要生成`IS NULL`或`IS NOT NULL`条件, 请使用标准的`and`或`or`方法.
 :::
+
+### 对应的SQL语句
+```sql
+SELECT
+    ...
+FROM
+    STUDENT
+<where>
+    <if test="name != null and name != ''">
+        AND NAME LIKE CONCAT('%', #{name}, '%')
+    </if>
+    <if test="minAge != null">
+        AND AGE >= #{minAge}
+    </if>
+    <if test="maxAge != null">
+        AND AGE &lt;= #{maxAge}
+    </if>
+    <if test="sex != null">
+        AND SEX = #{sex}
+    </if>
+</where>
+```
+::: tip 注意
+此处的SQL语句仅为静态示例，实际生成的SQL中, `LIKE` 比较符会根据入参进行动态适配。
+
+比如:
+- 当传入的`name`参数不含通配符, 比如`"John"`时, 生成的SQL会自动添加通配符: `NAME LIKE CONCAT('%', #{name}, '%')`
+- 当传入的`name`参数包含通配符, 比如`"%John"`时, 生成的SQL会严格使用入参: `NAME LIKE #{name}`
+:::
+
+

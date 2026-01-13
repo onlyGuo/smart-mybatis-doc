@@ -27,6 +27,25 @@ public class StudentServiceImpl implements StudentService {
     }
 }
 ```
+### 对应的SQL语句
+```sql
+SELECT
+    ...
+FROM
+    STUDENT
+WHERE
+    NAME LIKE CONCAT('%', #{name}, '%')
+    AND AGE >= #{minAge}
+    AND AGE <= #{maxAge}
+    AND SEX = #{sex}
+```
+::: tip 注意
+此处的SQL语句仅为静态示例，实际生成的SQL中, `LIKE` 比较符会根据入参进行动态适配。
+
+比如:
+- 当传入的`name`参数不含通配符, 比如`"John"`时, 生成的SQL会自动添加通配符: `NAME LIKE CONCAT('%', #{name}, '%')`
+- 当传入的`name`参数包含通配符, 比如`"%John"`时, 生成的SQL会严格使用入参: `NAME LIKE #{name}`
+:::
 
 ## 动态条件查询
 假设我们有一些查询条件是可选的，可以根据传入的参数动态添加条件：
@@ -57,6 +76,35 @@ public class StudentServiceImpl implements StudentService {
     }
 }
 ```
+### 对应的SQL语句
+```sql
+SELECT
+    ...
+FROM
+    STUDENT
+<where>
+    <if test="name != null and name != ''">
+        AND NAME LIKE CONCAT('%', #{name}, '%')
+    </if>
+    <if test="minAge != null">
+        AND AGE >= #{minAge}
+    </if>
+    <if test="maxAge != null">
+        AND AGE &lt;= #{maxAge}
+    </if>
+    <if test="sex != null">
+        AND SEX = #{sex}
+    </if>
+</where>
+```
+::: tip 注意
+此处的SQL语句仅为静态示例，实际生成的SQL中, `LIKE` 比较符会根据入参进行动态适配。
+
+比如:
+- 当传入的`name`参数不含通配符, 比如`"John"`时, 生成的SQL会自动添加通配符: `NAME LIKE CONCAT('%', #{name}, '%')`
+- 当传入的`name`参数包含通配符, 比如`"%John"`时, 生成的SQL会严格使用入参: `NAME LIKE #{name}`
+:::
+
 ## 简化动态条件查询
 正如上面的代码所示，我们可以根据传入的参数动态地添加查询条件，从而实现灵活的查询功能。 但随之而来的代码冗长和可读性下降的问题. 
 因此, 我们对连接符进行了封装, 可以避免这种冗余代码.
@@ -78,6 +126,36 @@ public class StudentServiceImpl implements StudentService {
     }
 }
 ```
+
+### 对应的SQL语句
+```sql
+SELECT
+    ...
+FROM
+    STUDENT
+<where>
+    <if test="name != null and name != ''">
+        AND NAME LIKE CONCAT('%', #{name}, '%')
+    </if>
+    <if test="minAge != null">
+        AND AGE >= #{minAge}
+    </if>
+    <if test="maxAge != null">
+        AND AGE &lt;= #{maxAge}
+    </if>
+    <if test="sex != null">
+        AND SEX = #{sex}
+    </if>
+</where>
+```
+::: tip 注意
+此处的SQL语句仅为静态示例，实际生成的SQL中, `LIKE` 比较符会根据入参进行动态适配。
+
+比如:
+- 当传入的`name`参数不含通配符, 比如`"John"`时, 生成的SQL会自动添加通配符: `NAME LIKE CONCAT('%', #{name}, '%')`
+- 当传入的`name`参数包含通配符, 比如`"%John"`时, 生成的SQL会严格使用入参: `NAME LIKE #{name}`
+:::
+
 通过这种方式，我们可以大大简化动态条件查询的代码，提高代码的可读性和维护性。 但仍然有一些问题, 那就是它不利于现代编辑器的自动填充.
 
 > 注意: 当使用`ifAnd`或`ifOr`来添加条件时, 如果传入的值为`null`或空字符串, 该条件将不会被添加到查询中. 如果您需要生成`IS NULL`或`IS NOT NULL`条件, 请使用标准的`and`或`or`方法.
@@ -103,6 +181,9 @@ public class StudentServiceImpl implements StudentService {
     }
 }
 ```
+### 对应的SQL语句
+同上.
+
 ## 更利于阅读的方法名
 虽然上面的方式已经很好地解决了类型安全和自动补全的问题, 并且极大地简化了动态条件查询的代码, 但仍然存在一个问题, 那就是方法名不够直观. 
 
@@ -126,6 +207,8 @@ public class StudentServiceImpl implements StudentService {
     }
 }
 ```
+### 对应的SQL语句
+同上.
 
 至于使用哪种方法, 完全取决于个人喜好和团队的编码规范。无论选择哪种方式, 关键是要确保代码的可读性和可维护性。
 

@@ -40,6 +40,27 @@ public class StudentServiceImpl implements StudentService {
 }
 ```
 从上面的代码可以看到, 我们通过`appendExpression`方法添加了多个查询条件, 每个条件都是一个`ComparisonExpression`对象, 其中包含了字段、操作符、值和连接符.
+
+### 对应的SQL语句
+```sql
+SELECT
+    ...
+FROM
+    STUDENT
+WHERE
+    NAME LIKE CONCAT('%', #{name}, '%')
+    AND AGE >= #{minAge}
+    AND AGE <= #{maxAge}
+    AND SEX = #{sex}
+```
+::: tip 注意
+此处的SQL语句仅为静态示例，实际生成的SQL中, `LIKE` 比较符会根据入参进行动态适配。
+
+比如:
+- 当传入的`name`参数不含通配符, 比如`"John"`时, 生成的SQL会自动添加通配符: `NAME LIKE CONCAT('%', #{name}, '%')`
+- 当传入的`name`参数包含通配符, 比如`"%John"`时, 生成的SQL会严格使用入参: `NAME LIKE #{name}`
+:::
+
 ## 可用的操作符
 Smart Mybatis支持以下操作符:
 
@@ -106,6 +127,37 @@ public class StudentServiceImpl implements StudentService {
 }
 ```
 在上面的示例中, 我们根据传入的参数动态地构建了查询条件, 并使用`studentMapper.select(where)`方法执行查询, 最终返回符合条件的学生列表。
+
+### 对应的SQL
+上述代码将生成类似以下的SQL查询语句:
+
+```sql
+SELECT
+    ...
+FROM
+    STUDENT
+<where>
+    <if test="name != null and name != ''">
+        AND NAME LIKE CONCAT('%', #{name}, '%')
+    </if>
+    <if test="minAge != null">
+        AND AGE >= #{minAge}
+    </if>
+    <if test="maxAge != null">
+        AND AGE &lt;= #{maxAge}
+    </if>
+    <if test="sex != null">
+        AND SEX = #{sex}
+    </if>
+</where>
+```
+::: tip 注意
+此处的SQL语句仅为静态示例，实际生成的SQL中, `LIKE` 比较符会根据入参进行动态适配。
+
+比如:
+- 当传入的`name`参数不含通配符, 比如`"John"`时, 生成的SQL会自动添加通配符: `NAME LIKE CONCAT('%', #{name}, '%')`
+- 当传入的`name`参数包含通配符, 比如`"%John"`时, 生成的SQL会严格使用入参: `NAME LIKE #{name}`
+  :::
 
 ::: tip 建议
 但是, 正如前面提到的, 这段代码显得非常臃肿, 且用到了大量的枚举和泛型, 所以会变得非常不利于阅读, 我们更推荐使用[DSL 查询](./dsl-query.html)来实现相同的功能, 这样代码会更加简洁和易于维护。

@@ -14,14 +14,14 @@ date: 2025/11/21
 <dependency>
     <groupId>ink.icoding</groupId>
     <artifactId>spring-boot-starter-smart-mybatis</artifactId>
-    <version>1.0.7</version>
+    <version>1.1.6</version>
 </dependency>
 ```
 - Gradle方式
 
 在您的 `build.gradle` 文件中添加以下依赖
 ```groovy
-implementation 'ink.icoding:spring-boot-starter-smart-mybatis:1.0.7'
+implementation 'ink.icoding:spring-boot-starter-smart-mybatis:1.1.3'
 ```
 
 安装完成后, 默认情况下无需任何额外配置, Smart Mybatis 即可在 Spring Boot 环境中自动启用。
