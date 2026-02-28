@@ -73,6 +73,14 @@ export default defineUserConfig({
             "dev/query-page",
             // 排序
             "dev/query-sort",
+            // 联表查询
+            "dev/join-query",
+            // 联表查询基础
+            "dev/join-query-basic",
+            // 联表查询中的条件过滤
+            "dev/join-query-filter",
+            // 多表联表查询
+            "dev/join-query-multi",
           ]
         }
       ],
