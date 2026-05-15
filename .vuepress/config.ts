@@ -73,6 +73,8 @@ export default defineUserConfig({
             "dev/query-page",
             // 排序
             "dev/query-sort",
+            // 自动联表查询（非侵入式关联）
+            "dev/auto-join-query",
             // 联表查询
             "dev/join-query",
             // 联表查询基础
